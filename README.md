@@ -1,5 +1,4 @@
-# chatbot-interface-for-image-genration-for-kids-
-
+# Chatbot interface for image genration for kids 
 
 # Logo Container:
 
@@ -21,4 +20,4 @@ To add the actual Obsidian logo later:
 4. Call the `updateLogoDisplay()` function to refresh the UI
 
 
-# Also Included place for Webhook to integrate agent in javascript file you can check it out 
+**Also Included place for Webhook to integrate agent in javascript file you can check it out 
