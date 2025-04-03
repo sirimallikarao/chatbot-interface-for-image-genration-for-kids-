@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KidDoodle - Fun Image Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Comic+Neue:wght@400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --primary-color: #ff6b6b;
+            --secondary-color: #4cc9f0;
+            --accent-color: #f7d716;
+            --text-color: #ffffff;
+            --bubble-user: #4361ee;
+            --bubble-bot: #7209b7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Neue', cursive;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            height: 100vh;
+            overflow: hidden;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .title {
+            font-family: 'Bubblegum Sans', cursive;
+            font-size: 2.8rem;
+            color: var(--primary-color);
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .title::after {
+            content: "✨";
+            position: absolute;
+            right: -30px;
+            top: -10px;
+            font-size: 1.5rem;
+            animation: twinkle 2s infinite;
+        }
+
+        .title::before {
+            content: "🎨";
+            position: absolute;
+            left: -40px;
+            top: 5px;
+            font-size: 1.8rem;
+            transform: rotate(-15deg);
+        }
+
+        @keyframes twinkle {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.7;
+                transform: scale(1.2);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        .subtitle::after {
+            content: "🚀";
+            position: absolute;
+            right: -30px;
+            top: 0;
+            font-size: 1.2rem;
+        }
+
+        .subtitle::before {
+            content: "🌈";
+            position: absolute;
+            left: -30px;
+            top: 0;
+            font-size: 1.2rem;
+        }
+
+        .chatbot-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            position: relative;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .chat-header {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            border-bottom: 3px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .bot-avatar {
+            width: 60px;
+            height: 60px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bot-avatar::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 50%);
+            top: 0;
+            left: 0;
+        }
+
+        .bot-info h2 {
+            font-family: 'Bubblegum Sans', cursive;
+            margin-bottom: 5px;
+            font-size: 1.8rem;
+            text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .bot-info p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-image: url("data:image/svg+xml,%3Csvg width='52' height='26' viewBox='0 0 52 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M10 10c0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6h2c0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4 3.314 0 6 2.686 6 6 0 2.21 1.79 4 4 4v2c-3.314 0-6-2.686-6-6 0-2.21-1.79-4-4-4-3.314 0-6-2.686-6-6zm25.464-1.95l8.486 8.486-1.414 1.414-8.486-8.486 1.414-1.414z' /%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            position: relative;
+            animation: popIn 0.3s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        @keyframes popIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .user-message {
+            align-self: flex-end;
+            background-color: var(--bubble-user);
+            border-bottom-right-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .user-message::before {
+            content: "👧";
+            position: absolute;
+            right: -25px;
+            bottom: 0;
+            font-size: 20px;
+        }
+
+        .bot-message {
+            align-self: flex-start;
+            background-color: var(--bubble-bot);
+            border-bottom-left-radius: 5px;
+            margin-left: 10px;
+        }
+
+        .bot-message::before {
+            content: "🤖";
+            position: absolute;
+            left: -25px;
+            bottom: 0;
+            font-size: 20px;
+        }
+
+        .image-container {
+            margin-top: 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        .image-container::before {
+            content: "✨";
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            font-size: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .image-container::after {
+            content: "✨";
+            position: absolute;
+            bottom: -10px;
+            right: 10px;
+            font-size: 20px;
+            animation: float 3s ease-in-out infinite 1.5s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .generated-image {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 3px solid white;
+        }
+
+        .chat-input {
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 2px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 30px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-color);
+            font-family: 'Comic Neue', cursive;
+            font-size: 1rem;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(76, 201, 240, 0.3), inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .send-button {
+            background-color: var(--accent-color);
+            color: #333;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            font-size: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .send-button:hover {
+            transform: scale(1.1);
+            background-color: #ffdd00;
+        }
+
+        .send-button:active {
+            transform: scale(0.95);
+        }
+
+        .floating-bubbles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0);
+            }
+
+            100% {
+                transform: translateY(-100px) scale(1);
+            }
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 10px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: white;
+            border-radius: 50%;
+            animation: typingAnimation 1.5s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingAnimation {
+
+            0%,
+            60%,
+            100% {
+                transform: translateY(0);
+            }
+
+            30% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+
+            .message {
+                max-width: 90%;
+            }
+        }
+
+        .logo-container {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+            width: 60px;
+            overflow: hidden;
+        }
+
+        .logo-placeholder {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--accent-color);
+            font-size: 12px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .logo-image {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .emoji-decoration {
+            position: absolute;
+            font-size: 24px;
+            animation: float-around 8s ease-in-out infinite;
+            opacity: 0.7;
+            z-index: -1;
+        }
+
+        @keyframes float-around {
+
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            25% {
+                transform: translate(10px, -10px) rotate(10deg);
+            }
+
+            50% {
+                transform: translate(0, -15px) rotate(0deg);
+            }
+
+            75% {
+                transform: translate(-10px, -5px) rotate(-10deg);
+            }
+        }
+
+        .emoji-1 {
+            top: 20px;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .emoji-2 {
+            top: 50px;
+            right: 15%;
+            animation-delay: 1s;
+        }
+
+        .emoji-3 {
+            bottom: 30px;
+            left: 20%;
+            animation-delay: 2s;
+        }
+
+        .emoji-4 {
+            bottom: 60px;
+            right: 10%;
+            animation-delay: 3s;
+        }
+
+        .emoji-5 {
+            top: 40%;
+            left: 5%;
+            animation-delay: 4s;
+        }
+
+        .emoji-6 {
+            top: 30%;
+            right: 5%;
+            animation-delay: 5s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">KidDoodle</h1>
+            <p class="subtitle">Tell me what to draw and I'll make it for you!</p>
+
+            <!-- Decorative emojis -->
+            <div class="emoji-decoration emoji-1">🎈</div>
+            <div class="emoji-decoration emoji-2">🦄</div>
+            <div class="emoji-decoration emoji-3">🌟</div>
+            <div class="emoji-decoration emoji-4">🎮</div>
+            <div class="emoji-decoration emoji-5">🍦</div>
+            <div class="emoji-decoration emoji-6">🚀</div>
+        </div>
+
+        <div class="chatbot-container">
+            <div class="chat-header">
+                <div class="bot-avatar">🎨</div>
+                <div class="bot-info">
+                    <h2>Doodle Bot</h2>
+                    <p>Your creative friend ✨</p>
+                </div>
+                <div class="logo-container" id="logoContainer">
+                    <!-- Obsidian Technology Logo will be added here -->
+                    <div class="logo-placeholder">Logo</div>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be added here by JavaScript -->
+            </div>
+
+            <div class="chat-input">
+                <input type="text" class="message-input" id="messageInput"
+                    placeholder="Describe an image you want to see... 🖌️" autocomplete="off">
+                <button class="send-button" id="sendButton">🚀</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="floating-bubbles" id="floatingBubbles">
+        <!-- Bubbles will be added by JavaScript -->
+    </div>
+
+    <script src="page.js"></script>
+</body>
+
+</html>
