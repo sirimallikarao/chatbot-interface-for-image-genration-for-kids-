@@ -19,3 +19,6 @@ To add the actual Obsidian logo later:
 2. In the `page.js` file, find the comment that says "To add the Obsidian Technology logo later"
 3. Set the `config.logoPath` to the path of your logo image
 4. Call the `updateLogoDisplay()` function to refresh the UI
+
+
+# Also Included place for Webhook to integrate agent in javascript file you can check it out 
